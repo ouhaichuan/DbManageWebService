@@ -53,16 +53,12 @@ namespace DbManageWebService
             return dbOperation.selectCanSeeMissionInfo(id).ToArray();
         }
 
-<<<<<<< HEAD
-
         [WebMethod(Description = "获取统计信息")]
         public string[] doFindChartData(int userid)
         {
             return dbOperation.doFindChartData(userid).ToArray();
         }
 
-=======
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
         [WebMethod(Description = "获取任务的详细信息")]
         public string[] selectDetailedMissionInfo(int id)
         {

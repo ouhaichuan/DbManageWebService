@@ -23,11 +23,7 @@ namespace DbManageWebService
 
         //将下面的引号之间的内容换成上面记录下的属性中的连接字符串
         private String ConServerStr = @"Data Source=HCOU\SQLEXPRESS;Initial Catalog=DB_PM;Integrated Security=True";
-<<<<<<< HEAD
         // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
-=======
-        //private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
 
         //默认构造函数
         public DBOperation()
@@ -73,11 +69,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-<<<<<<< HEAD
                     list.Add(reader[24].ToString());
-=======
-                    list.Add(reader[23].ToString());
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -111,11 +103,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-<<<<<<< HEAD
                     list.Add(reader[24].ToString());
-=======
-                    list.Add(reader[23].ToString());
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -152,21 +140,12 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-<<<<<<< HEAD
                     list.Add(reader[27].ToString());
                     list.Add(reader[24].ToString());
                     list.Add(reader[10].ToString());
                     list.Add(reader[26].ToString());
                     list.Add(reader[17].ToString());
                     list.Add(reader[25].ToString());
-=======
-                    list.Add(reader[26].ToString());
-                    list.Add(reader[23].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[25].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[24].ToString());
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -189,11 +168,6 @@ namespace DbManageWebService
             {
                 string sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where createUserID != " + createUserId;
 
-<<<<<<< HEAD
-=======
-                Console.WriteLine(sql);
-
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -206,11 +180,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-<<<<<<< HEAD
                     list.Add(reader[24].ToString());
-=======
-                    list.Add(reader[23].ToString());
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -297,11 +267,6 @@ namespace DbManageWebService
             {
                 string sql = "delete from Tab_Attent where userid_id=" + userid + " and mission_id=" + missionid;
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
-
-<<<<<<< HEAD
-=======
-
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
                 cmd.ExecuteNonQuery();
                 cmd.Dispose();
 
@@ -417,7 +382,6 @@ namespace DbManageWebService
 
             return list;
         }
-<<<<<<< HEAD
 
         /// <summary>
         /// 获取统计信息
@@ -448,7 +412,5 @@ namespace DbManageWebService
             }
             return list;
         }
-=======
->>>>>>> d60616919c36cf4dbb718d667f7541cc22e50bc1
     }
 }
