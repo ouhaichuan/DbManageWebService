@@ -59,10 +59,22 @@ namespace DbManageWebService
             return dbOperation.doFindChartData(userid).ToArray();
         }
 
-        [WebMethod(Description = "获取任务的详细信息")]
-        public string[] selectDetailedMissionInfo(int id)
+        [WebMethod(Description = "获取我的任务的详细信息")]
+        public string[] selectMyMissionDetailedInfo(int id, int userid)
         {
-            return dbOperation.selectDetailedMissionInfo(id).ToArray();
+            return dbOperation.selectMyMissionDetailedInfo(id, userid).ToArray();
+        }
+
+        [WebMethod(Description = "获取我的关注任务的详细信息")]
+        public string[] selectWatchMissionDetailedInfo(int id, int userid)
+        {
+            return dbOperation.selectWatchMissionDetailedInfo(id, userid).ToArray();
+        }
+
+        [WebMethod(Description = "获取我的关注任务的详细信息")]
+        public string[] selectCanSeeMissionDetailedInfo(int id, int userid)
+        {
+            return dbOperation.selectCanSeeMissionDetailedInfo(id, userid).ToArray();
         }
 
         [WebMethod(Description = "增加一条任务信息")]

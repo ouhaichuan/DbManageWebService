@@ -116,16 +116,16 @@ namespace DbManageWebService
         }
 
         /// <summary>
-        /// 获取任务的详细信息
+        /// 获取我的任务的详细信息
         /// </summary>
         /// <returns>任务的详细信息</returns>
-        public List<string> selectDetailedMissionInfo(int missionid)
+        public List<string> selectMyMissionDetailedInfo(int missionid, int createUserId)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select a.*,ss=case status when 0 then '起草' when 1 then '进行中' when 2 then '待审核' when 3 then '已完成' end,child=(select count(*) from Tab_Mission where parentid=a.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end from Tab_Mission a  where a.id=" + missionid;
+                string sql = "select t.*,ss=case status when 0 then '起草' when 1 then '进行中' when 2 then '待审核' when 3 then '已完成' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and createUserID=" + createUserId;
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -146,6 +146,98 @@ namespace DbManageWebService
                     list.Add(reader[26].ToString());
                     list.Add(reader[17].ToString());
                     list.Add(reader[25].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取我的关注的任务详细信息
+        /// </summary>
+        /// <returns>关注任务的详细信息</returns>
+        public List<string> selectWatchMissionDetailedInfo(int missionid, int createUserId)
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "select t.*,ss=case status when 0 then '起草' when 1 then '进行中' when 2 then '待审核' when 3 then '已完成' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and id in (select mission_id from tab_attent where userid_id=" + createUserId + ")";
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add("自主式");
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString());
+                    list.Add(reader[6].ToString());
+                    list.Add(reader[27].ToString());
+                    list.Add(reader[24].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[26].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[25].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取我的任务的详细信息
+        /// </summary>
+        /// <returns>任务的详细信息</returns>
+        public List<string> selectCanSeeMissionDetailedInfo(int missionid, int createUserId)
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "select t.*,ss=case status when 0 then '起草' when 1 then '进行中' when 2 then '待审核' when 3 then '已完成' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and createUserID!=" + createUserId;
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add("自主式");
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString());
+                    list.Add(reader[6].ToString());
+                    list.Add(reader[27].ToString());
+                    list.Add(reader[24].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[26].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[25].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
