@@ -23,7 +23,7 @@ namespace DbManageWebService
 
         //将下面的引号之间的内容换成上面记录下的属性中的连接字符串
         private String ConServerStr = @"Data Source=HCOU\SQLEXPRESS;Initial Catalog=DB_PM;Integrated Security=True";
-        // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
+        //private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
 
         //默认构造函数
         public DBOperation()
