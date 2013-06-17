@@ -56,7 +56,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*, '100%' as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ")";
+                string sql = "select t.*, bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ")";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -69,7 +69,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-                    list.Add(reader[24].ToString());
+                    list.Add(reader[27].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -90,7 +90,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,'100%' as counts from Tab_Mission t where createUserID = " + createUserId;
+                string sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + createUserId;
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -103,7 +103,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-                    list.Add(reader[24].ToString());
+                    list.Add(reader[27].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -132,23 +132,23 @@ namespace DbManageWebService
                 while (reader.Read())
                 {
                     //将结果集信息添加到返回向量中
-                    list.Add("自主式");
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[26].ToString());
+                    list.Add(reader[24].ToString());
                     list.Add(reader[1].ToString());
                     list.Add(reader[3].ToString());
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[25].ToString());
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[24].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[26].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[25].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[30].ToString());
+                    list.Add(reader[27].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[32].ToString());
+                    list.Add(reader[33].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -177,23 +177,23 @@ namespace DbManageWebService
                 while (reader.Read())
                 {
                     //将结果集信息添加到返回向量中
-                    list.Add("自主式");
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[26].ToString());
+                    list.Add(reader[24].ToString());
                     list.Add(reader[1].ToString());
                     list.Add(reader[3].ToString());
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[25].ToString());
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[24].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[26].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[25].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[30].ToString());
+                    list.Add(reader[27].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[32].ToString());
+                    list.Add(reader[33].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -221,23 +221,23 @@ namespace DbManageWebService
                 while (reader.Read())
                 {
                     //将结果集信息添加到返回向量中
-                    list.Add("自主式");
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[26].ToString());
+                    list.Add(reader[24].ToString());
                     list.Add(reader[1].ToString());
                     list.Add(reader[3].ToString());
-                    list.Add(reader[3].ToString());
+                    list.Add(reader[25].ToString());
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[24].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[26].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[25].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[30].ToString());
+                    list.Add(reader[27].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[32].ToString());
+                    list.Add(reader[33].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -272,7 +272,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-                    list.Add(reader[24].ToString());
+                    list.Add(reader[27].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
