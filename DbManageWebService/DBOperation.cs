@@ -504,5 +504,153 @@ namespace DbManageWebService
             }
             return list;
         }
+
+        /// <summary>
+        /// 获取我的申请车辆信息
+        /// </summary>
+        /// <returns>我的申请车辆信息</returns>
+        public List<string> selectMyCarAppInfo(int userId)
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "SELECT id,CarID,(select username from tab_user where tab_user.id = AppUserID) username,CarNum,Destination,Status,convert(varchar, AddTime, 102) addtime FROM CarApp where AppUserID=" + userId;
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());//申请号
+                    list.Add(reader[1].ToString());//车辆号
+                    list.Add(reader[2].ToString());//申请人
+                    list.Add(reader[3].ToString());//车牌号
+                    list.Add(reader[4].ToString());//目的地
+                    list.Add(reader[5].ToString());//状态
+                    list.Add(reader[6].ToString());//添加时间
+                }
+                reader.Close();
+                cmd.Dispose();
+
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 删除一条申请信息
+        /// </summary>
+        /// <param name="app_id">申请ID</param>
+        public List<string> doDeleteCarAppReq(int app_id)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "delete from CarApp where id=" + app_id;
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 获取我的申请的详细信息
+        /// </summary>
+        /// <returns>申请的详细信息</returns>
+        public List<string> selectCarAppDetailedInfo(int app_id)
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "select convert(varchar, BeginTime, 102) BeginTime,convert(varchar, EndTime, 102) EndTime,PersonNum,Reason,Destination,Remark from CarApp where id=" + app_id;
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString());
+                    list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 更新申请信息
+        /// </summary>
+        /// <returns>更新申请信息结果/returns>
+        public List<string> doUpdateCarAppReq(int app_id, string begin_time, string end_time, string person_num, string reason, string destination, string remarks)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "update CarApp set BeginTime=(select convert(datetime,'" + begin_time + "')),EndTime=(select convert(datetime,'" + end_time + "')),PersonNum=" + person_num + ",Reason='" + reason + "',Destination='" + destination + "',Remark='" + remarks + "' where id=" + app_id;
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 查询所有的车辆
+        /// </summary>
+        /// <returns>所有的车辆</returns>
+        public List<string> selectAllCars()
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "select Num + '$' + convert(varchar,id) as idAndNum from CarList";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
     }
+
 }

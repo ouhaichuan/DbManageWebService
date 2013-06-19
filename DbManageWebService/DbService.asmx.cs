@@ -100,5 +100,30 @@ namespace DbManageWebService
         {
             return dbOperation.doDeleteReq(missionid).ToArray();
         }
+        [WebMethod(Description = "获取我的申请车辆的信息")]
+        public string[] selectMyCarAppInfo(int userId)
+        {
+            return dbOperation.selectMyCarAppInfo(userId).ToArray();
+        }
+        [WebMethod(Description = "删除一条申请信息")]
+        public string[] doDeleteCarAppReq(int app_id)
+        {
+            return dbOperation.doDeleteCarAppReq(app_id).ToArray();
+        }
+        [WebMethod(Description = "获取申请详细信息")]
+        public string[] selectCarAppDetailedInfo(int app_id)
+        {
+            return dbOperation.selectCarAppDetailedInfo(app_id).ToArray();
+        }
+        [WebMethod(Description = "更新申请详细信息")]
+        public string[] doUpdateCarAppReq(int app_id, string begin_time, string end_time, string person_num, string reason, string destination, string remarks)
+        {
+            return dbOperation.doUpdateCarAppReq(app_id, begin_time, end_time, person_num, reason, destination, remarks).ToArray();
+        }
+        [WebMethod(Description = "查询车辆信息")]
+        public string[] selectAllCars()
+        {
+            return dbOperation.selectAllCars().ToArray();
+        }
     }
 }
