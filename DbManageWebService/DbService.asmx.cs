@@ -125,5 +125,10 @@ namespace DbManageWebService
         {
             return dbOperation.selectAllCars().ToArray();
         }
+        [WebMethod(Description = "添加申请信息")]
+        public string[] doAddCarAppReq(int user_id, string car_num, int car_id, string begin_time, string end_time, string person_num, string reason, string destination, string remarks)
+        {
+            return dbOperation.doAddCarAppReq(user_id, car_num, car_id, begin_time, end_time, person_num, reason, destination, remarks).ToArray();
+        }
     }
 }

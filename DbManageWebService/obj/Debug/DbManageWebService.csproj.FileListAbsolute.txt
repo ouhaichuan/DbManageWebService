@@ -1,5 +1,5 @@
-c:\users\administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\bin\DbManageWebService.dll
-c:\users\administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\bin\DbManageWebService.pdb
-c:\users\administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\ResolveAssemblyReference.cache
-c:\users\administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\DbManageWebService.dll
-c:\users\administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\DbManageWebService.pdb
+C:\Users\Administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\bin\DbManageWebService.dll
+C:\Users\Administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\bin\DbManageWebService.pdb
+C:\Users\Administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\DbManageWebService.dll
+C:\Users\Administrator\documents\visual studio 2010\Projects\DbManageWebService\DbManageWebService\obj\Debug\DbManageWebService.pdb

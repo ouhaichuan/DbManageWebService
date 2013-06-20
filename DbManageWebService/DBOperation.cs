@@ -23,7 +23,7 @@ namespace DbManageWebService
 
         //将下面的引号之间的内容换成上面记录下的属性中的连接字符串
         private String ConServerStr = @"Data Source=HCOU\SQLEXPRESS;Initial Catalog=DB_PM;Integrated Security=True";
-        //private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
+       // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
 
         //默认构造函数
         public DBOperation()
@@ -515,7 +515,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "SELECT id,CarID,(select username from tab_user where tab_user.id = AppUserID) username,CarNum,Destination,Status,convert(varchar, AddTime, 102) addtime FROM CarApp where AppUserID=" + userId;
+                string sql = "SELECT id,CarID,(select username from tab_user where tab_user.id = AppUserID) username,CarNum,(case when isnull(Destination,'')='' then ' ' else Destination end) Destination,Status,convert(varchar, AddTime, 102) addtime FROM CarApp where AppUserID=" + userId;
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -576,7 +576,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select convert(varchar, BeginTime, 102) BeginTime,convert(varchar, EndTime, 102) EndTime,PersonNum,Reason,Destination,Remark from CarApp where id=" + app_id;
+                string sql = "select convert(varchar, BeginTime, 102) BeginTime,convert(varchar, EndTime, 102) EndTime,(case when isnull(PersonNum,'')='' then ' ' else PersonNum end) PersonNum,(case when isnull(Reason,'')='' then ' ' else Reason end) Reason,(case when isnull(Destination,'')='' then ' ' else Destination end) Destination,(case when isnull(remark,'')='' then ' ' else remark end) remark from CarApp where id=" + app_id;
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -649,6 +649,31 @@ namespace DbManageWebService
             catch (Exception)
             {
             }
+            return list;
+        }
+
+        /// <summary>
+        /// 添加申请信息
+        /// </summary>
+        /// <returns>添加申请信息结果/returns>
+        public List<string> doAddCarAppReq(int user_id, string car_num, int car_id, string begin_time, string end_time, string person_num, string reason, string destination, string remarks)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "insert into CarApp(AppUserID,carnum,carid,BeginTime,EndTime,PersonNum,Reason,Destination,Remark,Status,AddTime) values(" + user_id + ",'" + car_num + "'," + car_id + ",convert(datetime,'" + begin_time + "'),convert(datetime,'" + end_time + "')," + person_num + ",'" + reason + "','" + destination + "','" + remarks + "',1,getdate())";
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
             return list;
         }
     }
