@@ -23,7 +23,9 @@ namespace DbManageWebService
 
         //将下面的引号之间的内容换成上面记录下的属性中的连接字符串
         private String ConServerStr = @"Data Source=HCOU\SQLEXPRESS;Initial Catalog=DB_PM;Integrated Security=True";
-       // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
+        // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
+
+        // private String ConServerStr = @"server=.;uid=jackbest;pwd=jackbest@163.com;database=DB_PM";
 
         //默认构造函数
         public DBOperation()
@@ -70,6 +72,7 @@ namespace DbManageWebService
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());
+                    list.Add(reader[28].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -90,7 +93,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + createUserId;
+                string sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + createUserId + "  order by importance,id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -103,7 +106,8 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-                    list.Add(reader[27].ToString());
+                    list.Add(reader[27].ToString());//重要性
+                    list.Add(reader[28].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -140,15 +144,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[29].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[28].ToString());
                     list.Add(reader[31].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[30].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
                     list.Add(reader[33].ToString());
+                    list.Add(reader[34].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -185,15 +189,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[29].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[28].ToString());
                     list.Add(reader[31].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[30].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
                     list.Add(reader[33].ToString());
+                    list.Add(reader[34].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -229,15 +233,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[29].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[28].ToString());
                     list.Add(reader[31].ToString());
+                    list.Add(reader[28].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[30].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
                     list.Add(reader[33].ToString());
+                    list.Add(reader[34].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -272,7 +276,8 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
-                    list.Add(reader[27].ToString());
+                    list.Add(reader[27].ToString());//重要性
+                    list.Add(reader[28].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -485,7 +490,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select (select COUNT(*) from Tab_Mission where status=3 and overTime<=endtime and createUserID = " + createUserId + ") as completeCounts,(select COUNT(*) from Tab_Mission where endtime<overTime and status = 3 and createUserID = " + createUserId + ") as overComplete,(select COUNT(*) from Tab_Mission where   status!=3 and createUserID = " + createUserId + ")executingCounts";
+                string sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and createUserID = " + createUserId + ") as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and createUserID = " + createUserId + ") as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and createUserID = " + createUserId + ")executingCounts";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -533,7 +538,6 @@ namespace DbManageWebService
                 }
                 reader.Close();
                 cmd.Dispose();
-
             }
             catch (Exception)
             {
@@ -662,6 +666,86 @@ namespace DbManageWebService
             try
             {
                 string sql = "insert into CarApp(AppUserID,carnum,carid,BeginTime,EndTime,PersonNum,Reason,Destination,Remark,Status,AddTime) values(" + user_id + ",'" + car_num + "'," + car_id + ",convert(datetime,'" + begin_time + "'),convert(datetime,'" + end_time + "')," + person_num + ",'" + reason + "','" + destination + "','" + remarks + "',1,getdate())";
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 获取填报的完成情况
+        /// </summary>
+        /// <returns>填报的完成情况</returns>
+        public List<string> selectReportInfo(int userId, int missionId)
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                string sql = "SELECT id,des,addtime from tab_misssion_report where addUserID = " + userId + " and  mid=" + missionId;
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());//ID
+                    list.Add(reader[1].ToString());//描述
+                    list.Add(reader[2].ToString());//添加时间
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return list;
+        }
+        /// <summary>
+        /// 删除一条完成情况信息
+        /// </summary>
+        /// <param name="id">完成情况ID</param>
+        public List<string> doDeleteReportReq(int report_id)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "delete from Tab_Misssion_report where id=" + report_id;
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 添加完成情况
+        /// </summary>
+        /// <returns>添加完成情况结果/returns>
+        public List<string> doAddReportReq(string report_info, string missionId, string userId)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "insert into Tab_Misssion_report(mid,des,addUserID,addUserName,addtime) select '" + missionId + "','" + report_info + "'," + userId + ",(select username from tab_user where id='" + userId + "'),getDate()";
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 cmd.ExecuteNonQuery();

@@ -130,5 +130,20 @@ namespace DbManageWebService
         {
             return dbOperation.doAddCarAppReq(user_id, car_num, car_id, begin_time, end_time, person_num, reason, destination, remarks).ToArray();
         }
+        [WebMethod(Description = "获取完成情况信息")]
+        public string[] selectReportInfo(int userId, int missionId)
+        {
+            return dbOperation.selectReportInfo(userId, missionId).ToArray();
+        }
+        [WebMethod(Description = "获取完成情况信息")]
+        public string[] doDeleteReportReq(int report_id)
+        {
+            return dbOperation.doDeleteReportReq(report_id).ToArray();
+        }
+        [WebMethod(Description = "添加完成情况信息")]
+        public string[] doAddReportReq(string report_info, string missionId, string userId)
+        {
+            return dbOperation.doAddReportReq(report_info, missionId, userId).ToArray();
+        }
     }
 }
