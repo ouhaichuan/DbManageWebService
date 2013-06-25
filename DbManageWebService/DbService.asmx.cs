@@ -135,7 +135,7 @@ namespace DbManageWebService
         {
             return dbOperation.selectReportInfo(userId, missionId).ToArray();
         }
-        [WebMethod(Description = "获取完成情况信息")]
+        [WebMethod(Description = "删除完成情况信息")]
         public string[] doDeleteReportReq(int report_id)
         {
             return dbOperation.doDeleteReportReq(report_id).ToArray();
@@ -144,6 +144,16 @@ namespace DbManageWebService
         public string[] doAddReportReq(string report_info, string missionId, string userId)
         {
             return dbOperation.doAddReportReq(report_info, missionId, userId).ToArray();
+        }
+        [WebMethod(Description = "获取子任务信息")]
+        public string[] selectChildMissionInfo(int userId, int intent_missionId)
+        {
+            return dbOperation.selectChildMissionInfo(userId, intent_missionId).ToArray();
+        }
+        [WebMethod(Description = "获取统计任务信息")]
+        public string[] selectChartMissionInfo(int userId, string datachart_index)
+        {
+            return dbOperation.selectChartMissionInfo(userId, datachart_index).ToArray();
         }
     }
 }
