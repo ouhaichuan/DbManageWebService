@@ -93,7 +93,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + createUserId + "  order by id";
+                string sql = "select t.*,bfb as counts from Tab_Mission t where ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + ")  order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -108,6 +108,8 @@ namespace DbManageWebService
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
                     list.Add(reader[28].ToString());
+                    list.Add(reader[24].ToString());//责任人
+                    list.Add(reader[25].ToString());//验收人
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -123,13 +125,13 @@ namespace DbManageWebService
         /// 获取我的任务的详细信息
         /// </summary>
         /// <returns>任务的详细信息</returns>
-        public List<string> selectMyMissionDetailedInfo(int missionid, int createUserId)
+        public List<string> selectMyMissionDetailedInfo(int missionid, int userid)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and createUserID=" + createUserId;
+                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and (t.ysrName=(select username from tab_user where id=" + userid + ") or t.zrrName=(select username from tab_user where id=" + userid + "))";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -212,13 +214,22 @@ namespace DbManageWebService
         /// 获取我的任务的详细信息
         /// </summary>
         /// <returns>任务的详细信息</returns>
-        public List<string> selectCanSeeMissionDetailedInfo(int missionid, int createUserId)
+        public List<string> selectCanSeeMissionDetailedInfo(int missionid, int createUserId, string rolename, string department_name)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and createUserID!=" + createUserId;
+                string sql = "";
+                if (rolename == "普通员工" || rolename == "主管")
+                {
+                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "'";
+                }
+                else if (rolename == "部门经理" || rolename == "副总经理" || rolename == "总经理")
+                {
+                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ")";
+                }
+
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -256,13 +267,21 @@ namespace DbManageWebService
         /// 获取可见任务的信息
         /// </summary>
         /// <returns>可见任务的信息</returns>
-        public List<string> selectCanSeeMissionInfo(int createUserId)
+        public List<string> selectCanSeeMissionInfo(int createUserId, string rolename, string department_name)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where createUserID != " + createUserId + " order by id";
+                string sql = "";
+                if (rolename == "普通员工" || rolename == "主管")
+                {
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "' order by id";
+                }
+                else if (rolename == "部门经理" || rolename == "副总经理" || rolename == "总经理")
+                {
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") order by id";
+                }
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -298,7 +317,7 @@ namespace DbManageWebService
             List<string> list = new List<string>();
             try
             {
-                string sql = "select id,userpwd from Tab_User where userid = '" + userid + "'";
+                string sql = "select id,userpwd,(select rolename from tab_role where tab_user.roleid=id) as rolename,(select departmentname from tab_department where tab_user.departid=id) as departmentname,username from Tab_User where userid = '" + userid + "'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -308,11 +327,17 @@ namespace DbManageWebService
                     {
                         list.Add(reader[0].ToString());
                         list.Add("true");
+                        list.Add(reader[2].ToString());//角色名称
+                        list.Add(reader[3].ToString());//部门名称
+                        list.Add(reader[4].ToString());//用户名称
                     }
                     else
                     {
                         list.Add(reader[0].ToString());
                         list.Add("false");
+                        list.Add(reader[2].ToString());//角色名称
+                        list.Add(reader[3].ToString());//部门名称
+                        list.Add(reader[4].ToString());//用户名称
                     }
                 }
                 reader.Close();
@@ -325,6 +350,9 @@ namespace DbManageWebService
             {
                 list.Add("非法用户");
                 list.Add("false");
+                list.Add("非法用户");
+                list.Add("非法用户");
+                list.Add("非法用户");
             }
             return list;
         }
@@ -484,13 +512,26 @@ namespace DbManageWebService
         /// 获取统计信息
         /// </summary>
         /// <returns>获取统计信息</returns>
-        public List<string> doFindChartData(int createUserId)
+        public List<string> doFindChartData(int createUserId, string rolename, string department_name)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and createUserID = " + createUserId + ") as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and createUserID = " + createUserId + ") as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and createUserID = " + createUserId + ")executingCounts";
+                string sql = "";
+                if (rolename == "普通员工" || rolename == "主管")
+                {
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as executingCounts";
+                }
+                else if (rolename == "部门经理")
+                {
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and deptName = '" + department_name + "') as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and deptName = '" + department_name + "') as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and deptName = '" + department_name + "') as executingCounts";
+                }
+                else if (rolename == "副总经理" || rolename == "总经理")
+                {
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5')) as completeCounts,(select COUNT(*) from Tab_Mission where status = 6) as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3')) as executingCounts";
+                }
+
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -760,11 +801,12 @@ namespace DbManageWebService
 
             return list;
         }
+
         /// <summary>
         /// 获取我的任务的信息
         /// </summary>
         /// <returns>我的任务信息</returns>
-        public List<string> selectChildMissionInfo(int userId, int intent_missionId)
+        public List<string> selectChildMissionInfo(int intent_missionId)
         {
             List<string> list = new List<string>();
 
@@ -800,7 +842,7 @@ namespace DbManageWebService
         /// 获取统计任务信息
         /// </summary>
         /// <returns>获取统计任务信息</returns>
-        public List<string> selectChartMissionInfo(int userId, string datachart_index)
+        public List<string> selectChartMissionInfo(int userId, string datachart_index, string rolename, string department_name)
         {
             List<string> list = new List<string>();
 
@@ -809,16 +851,29 @@ namespace DbManageWebService
                 string sql = "";
                 if (datachart_index == "0")//完成
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + userId + " and status in (4,5) order by id";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (4,5) ";
                 }
                 else if (datachart_index == "1")//超时
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + userId + " and status = 6 order by id";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 6 ";
                 }
                 else if (datachart_index == "2")//进行中
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where createUserID = " + userId + " and status in (1,2,3) order by id";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,3) ";
                 }
+
+                if (rolename == "普通员工" || rolename == "主管")
+                {
+                    sql += "and (createUserID = " + userId + " or zrrName=(select username from tab_user where id=" + userId + "))";
+                }
+                else if (rolename == "部门经理")
+                {
+                    sql += "and deptName='" + department_name + "'";
+                }
+                else if (rolename == "副总经理" || rolename == "总经理")
+                {
+                }
+
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -841,6 +896,68 @@ namespace DbManageWebService
             catch (Exception)
             {
             }
+            return list;
+        }
+
+        /// <summary>
+        /// 完成某个任务
+        /// </summary>
+        /// <returns>完成某个任务结果/returns>
+        public List<string> doCompleteTaskReq(int missionId, string userId)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "update tab_mission set status='3' where id=" + missionId;
+                string instr_sql = "insert into tab_missionjournal(journalName,doTime,AddUser,AddUserId) select '用户提交任务待审'+'" + missionId + "',getDate(),(select username from tab_user where id='" + userId + "'),'" + userId + "'";
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                SqlCommand cmd2 = new SqlCommand(instr_sql, sqlCon);
+                cmd2.ExecuteNonQuery();
+
+                cmd.Dispose();
+                cmd2.Dispose();
+
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 审核某个任务
+        /// </summary>
+        /// <returns>审核某个任务结果/returns>
+        public List<string> doAuditTaskReq(int missionId, string userId)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "update tab_mission set status=(case when endtime<getDate() then '5' else '4' end),overtime=getDate() where id=" + missionId;
+                string instr_sql = "insert into tab_missionjournal(journalName,doTime,AddUser,AddUserId) select '审核任务'+'" + missionId + "',getDate(),(select username from tab_user where id='" + userId + "'),'" + userId + "'";
+
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+
+                SqlCommand cmd2 = new SqlCommand(instr_sql, sqlCon);
+                cmd2.ExecuteNonQuery();
+
+                cmd.Dispose();
+                cmd2.Dispose();
+
+                list.Add("true");
+            }
+            catch (Exception)
+            {
+                list.Add("false");
+            }
+
             return list;
         }
     }
