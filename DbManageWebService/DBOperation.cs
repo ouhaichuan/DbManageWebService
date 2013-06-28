@@ -131,7 +131,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and (t.ysrName=(select username from tab_user where id=" + userid + ") or t.zrrName=(select username from tab_user where id=" + userid + "))";
+                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '提交待审' when 3 then '已完成' when 4 then '删除待审' when 5 then '即将超时' when 6 then '超时完成' when 7 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and (t.ysrName=(select username from tab_user where id=" + userid + ") or t.zrrName=(select username from tab_user where id=" + userid + "))";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -175,7 +175,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and id in (select mission_id from tab_attent where userid_id=" + createUserId + ")";
+                string sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '提交待审' when 3 then '已完成' when 4 then '删除待审' when 5 then '即将超时' when 6 then '超时完成' when 7 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and id in (select mission_id from tab_attent where userid_id=" + createUserId + ")";
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -223,11 +223,11 @@ namespace DbManageWebService
                 string sql = "";
                 if (rolename == "普通员工" || rolename == "主管")
                 {
-                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "'";
+                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '提交待审' when 3 then '已完成' when 4 then '删除待审' when 5 then '即将超时' when 6 then '超时完成' when 7 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "'";
                 }
                 else if (rolename == "部门经理" || rolename == "副总经理" || rolename == "总经理")
                 {
-                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '即将超时' when 3 then '提交待审' when 4 then '已完成' when 5 then '超时完成' when 6 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ")";
+                    sql = "select t.*,ss=case status when 1 then '进行中' when 2 then '提交待审' when 3 then '已完成' when 4 then '删除待审' when 5 then '即将超时' when 6 then '超时完成' when 7 then '超时' end,child=(select count(*) from Tab_Mission where parentid=t.id),tbzq=case zq when 1 then '每天' when 2 then '每周' when 3 then '每月' end,mjl=case mj when 1 then '一级' when 2 then '二级' else '三级' end,id,isnull((select top 1 id from Tab_Mission where id>t.id order by id),0) next_id,isnull((select top 1 id from Tab_Mission where id<t.id order by id desc),0) for_id from Tab_Mission t where t.id=" + missionid + " and t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ")";
                 }
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -521,15 +521,15 @@ namespace DbManageWebService
                 string sql = "";
                 if (rolename == "普通员工" || rolename == "主管")
                 {
-                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and (createUserID = " + createUserId + " or zrrName=(select username from tab_user where id=" + createUserId + "))) as executingCounts";
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('3','6') and (ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + "))) as completeCounts,(select COUNT(*) from Tab_Mission where status = 7 and (ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + "))) as overTime,(select COUNT(*) from Tab_Mission where status in ('1','2','5') and (ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + "))) as executingCounts";
                 }
                 else if (rolename == "部门经理")
                 {
-                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5') and deptName = '" + department_name + "') as completeCounts,(select COUNT(*) from Tab_Mission where status = 6 and deptName = '" + department_name + "') as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3') and deptName = '" + department_name + "') as executingCounts";
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('3','6') and deptName = '" + department_name + "') as completeCounts,(select COUNT(*) from Tab_Mission where status = 7 and deptName = '" + department_name + "') as overTime,(select COUNT(*) from Tab_Mission where status in ('1','2','5') and deptName = '" + department_name + "') as executingCounts";
                 }
                 else if (rolename == "副总经理" || rolename == "总经理")
                 {
-                    sql = "select (select COUNT(*) from Tab_Mission where status in ('4','5')) as completeCounts,(select COUNT(*) from Tab_Mission where status = 6) as overTime,(select COUNT(*) from Tab_Mission where   status in ('1','2','3')) as executingCounts";
+                    sql = "select (select COUNT(*) from Tab_Mission where status in ('3','6')) as completeCounts,(select COUNT(*) from Tab_Mission where status = 7) as overTime,(select COUNT(*) from Tab_Mission where status in ('1','2','5')) as executingCounts";
                 }
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -803,9 +803,9 @@ namespace DbManageWebService
         }
 
         /// <summary>
-        /// 获取我的任务的信息
+        /// 获取子任务的信息
         /// </summary>
-        /// <returns>我的任务信息</returns>
+        /// <returns>子任务信息</returns>
         public List<string> selectChildMissionInfo(int intent_missionId)
         {
             List<string> list = new List<string>();
@@ -851,20 +851,20 @@ namespace DbManageWebService
                 string sql = "";
                 if (datachart_index == "0")//完成
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (4,5) ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (3,6) ";
                 }
                 else if (datachart_index == "1")//超时
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 6 ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 7 ";
                 }
                 else if (datachart_index == "2")//进行中
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,3) ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,5) ";
                 }
 
                 if (rolename == "普通员工" || rolename == "主管")
                 {
-                    sql += "and (createUserID = " + userId + " or zrrName=(select username from tab_user where id=" + userId + "))";
+                    sql += "and (ysrName=(select username from tab_user where id=" + userId + ") or zrrName=(select username from tab_user where id=" + userId + "))";
                 }
                 else if (rolename == "部门经理")
                 {
@@ -908,7 +908,7 @@ namespace DbManageWebService
             List<string> list = new List<string>();
             try
             {
-                string sql = "update tab_mission set status='3' where id=" + missionId;
+                string sql = "update tab_mission set status='2' where id=" + missionId;
                 string instr_sql = "insert into tab_missionjournal(journalName,doTime,AddUser,AddUserId) select '用户提交任务待审'+'" + missionId + "',getDate(),(select username from tab_user where id='" + userId + "'),'" + userId + "'";
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -939,7 +939,7 @@ namespace DbManageWebService
             List<string> list = new List<string>();
             try
             {
-                string sql = "update tab_mission set status=(case when endtime<getDate() then '5' else '4' end),overtime=getDate() where id=" + missionId;
+                string sql = "update tab_mission set status=(case when endtime<getDate() then '6' else '3' end),overtime=getDate() where id=" + missionId;
                 string instr_sql = "insert into tab_missionjournal(journalName,doTime,AddUser,AddUserId) select '审核任务'+'" + missionId + "',getDate(),(select username from tab_user where id='" + userId + "'),'" + userId + "'";
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
