@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="LabelDbWebService.asmx.cs" Class="LabelDbWebService.LabelDbWebService" %>

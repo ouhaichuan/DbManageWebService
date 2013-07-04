@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbManageWebService", "DbManageWebService\DbManageWebService.csproj", "{9E088EC6-4199-405F-8279-E47370581F58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabelDbWebService", "LabelDbWebService\LabelDbWebService.csproj", "{163F7F35-E417-4E2D-83C7-A6584DA1E371}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{9E088EC6-4199-405F-8279-E47370581F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E088EC6-4199-405F-8279-E47370581F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E088EC6-4199-405F-8279-E47370581F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163F7F35-E417-4E2D-83C7-A6584DA1E371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163F7F35-E417-4E2D-83C7-A6584DA1E371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163F7F35-E417-4E2D-83C7-A6584DA1E371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163F7F35-E417-4E2D-83C7-A6584DA1E371}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
