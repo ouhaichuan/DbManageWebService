@@ -77,12 +77,6 @@ namespace DbManageWebService
             return dbOperation.selectCanSeeMissionDetailedInfo(id, userid, rolename, department_name).ToArray();
         }
 
-        [WebMethod(Description = "增加一条任务信息")]
-        public bool insertMissionInfo(int id, string bh)
-        {
-            return dbOperation.insertMissionInfo(id, bh);
-        }
-
         [WebMethod(Description = "取消关注一条任务信息")]
         public string[] doAcessCancelReq(int userid, int missionid)
         {

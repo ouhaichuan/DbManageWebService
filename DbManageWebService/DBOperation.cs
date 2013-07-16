@@ -58,7 +58,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*, bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") order by id";
+                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -66,13 +66,13 @@ namespace DbManageWebService
                 {
                     //将结果集信息添加到返回向量中
                     list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[2].ToString());
                     list.Add(reader[3].ToString());
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[8].ToString());
-                    list.Add(reader[27].ToString());
-                    list.Add(reader[28].ToString());
+                    list.Add(reader[7].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -93,7 +93,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,bfb as counts from Tab_Mission t where ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + ")  order by id";
+                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts,zrrName,ysrName from Tab_Mission t where ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + ")  order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -101,15 +101,15 @@ namespace DbManageWebService
                 {
                     //将结果集信息添加到返回向量中
                     list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[2].ToString());
                     list.Add(reader[3].ToString());
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
-                    list.Add(reader[6].ToString());
-                    list.Add(reader[8].ToString());
-                    list.Add(reader[27].ToString());//重要性
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[24].ToString());//责任人
-                    list.Add(reader[25].ToString());//验收人
+                    list.Add(reader[6].ToString());//重要性
+                    list.Add(reader[7].ToString());
+                    list.Add(reader[8].ToString());//责任人
+                    list.Add(reader[9].ToString());//验收人
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -146,15 +146,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[31].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[30].ToString());
                     list.Add(reader[33].ToString());
                     list.Add(reader[34].ToString());
+                    list.Add(reader[35].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -191,15 +191,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[31].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[30].ToString());
                     list.Add(reader[33].ToString());
                     list.Add(reader[34].ToString());
+                    list.Add(reader[35].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -244,15 +244,15 @@ namespace DbManageWebService
                     list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
-                    list.Add(reader[31].ToString());
-                    list.Add(reader[28].ToString());
-                    list.Add(reader[10].ToString());
-                    list.Add(reader[30].ToString());
-                    list.Add(reader[17].ToString());
-                    list.Add(reader[29].ToString());
                     list.Add(reader[32].ToString());
+                    list.Add(reader[29].ToString());
+                    list.Add(reader[10].ToString());
+                    list.Add(reader[31].ToString());
+                    list.Add(reader[17].ToString());
+                    list.Add(reader[30].ToString());
                     list.Add(reader[33].ToString());
                     list.Add(reader[34].ToString());
+                    list.Add(reader[35].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -296,7 +296,7 @@ namespace DbManageWebService
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
-                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -452,29 +452,6 @@ namespace DbManageWebService
             }
 
             return list;
-        }
-
-        /// <summary>
-        /// 增加一条任务信息
-        /// </summary>
-        /// <param name="id">任务ID</param>
-        /// <param name="bh">任务编号</param>
-        public bool insertMissionInfo(int id, string bh)
-        {
-            List<string> list = new List<string>();
-            try
-            {
-                string sql = "insert into Tab_Mission (id,bh) values ('" + id + "'," + bh + ")";
-                SqlCommand cmd = new SqlCommand(sql, sqlCon);
-                cmd.ExecuteNonQuery();
-                cmd.Dispose();
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -826,7 +803,7 @@ namespace DbManageWebService
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
-                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -887,7 +864,7 @@ namespace DbManageWebService
                     list.Add(reader[6].ToString());
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
-                    list.Add(reader[28].ToString());
+                    list.Add(reader[29].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
