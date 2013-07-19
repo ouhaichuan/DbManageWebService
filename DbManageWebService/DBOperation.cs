@@ -52,13 +52,13 @@ namespace DbManageWebService
         /// 获取关注任务的信息
         /// </summary>
         /// <returns>关注任务信息</returns>
-        public List<string> selectWatchMissionInfo(int id)
+        public List<string> selectWatchMissionInfo(int id, string search_str)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") order by id";
+                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") and title like '%" + search_str + "%' order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -87,13 +87,13 @@ namespace DbManageWebService
         /// 获取我的任务的信息
         /// </summary>
         /// <returns>我的任务信息</returns>
-        public List<string> selectMyMissionInfo(int createUserId)
+        public List<string> selectMyMissionInfo(int createUserId, string search_str)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts,zrrName,ysrName from Tab_Mission t where ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + ")  order by id";
+                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts,zrrName,ysrName from Tab_Mission t where (ysrName=(select username from tab_user where id=" + createUserId + ") or zrrName=(select username from tab_user where id=" + createUserId + ")) and Title like '%" + search_str + "%' order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -267,7 +267,7 @@ namespace DbManageWebService
         /// 获取可见任务的信息
         /// </summary>
         /// <returns>可见任务的信息</returns>
-        public List<string> selectCanSeeMissionInfo(int createUserId, string rolename, string department_name)
+        public List<string> selectCanSeeMissionInfo(int createUserId, string rolename, string department_name, string search_str)
         {
             List<string> list = new List<string>();
 
@@ -276,11 +276,11 @@ namespace DbManageWebService
                 string sql = "";
                 if (rolename == "普通员工" || rolename == "主管")
                 {
-                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "' order by id";
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "' and title like '%" + search_str + "%' order by id";
                 }
                 else if (rolename == "部门经理" || rolename == "副总经理" || rolename == "总经理")
                 {
-                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") order by id";
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and title like '%" + search_str + "%' order by id";
                 }
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -783,13 +783,13 @@ namespace DbManageWebService
         /// 获取子任务的信息
         /// </summary>
         /// <returns>子任务信息</returns>
-        public List<string> selectChildMissionInfo(int intent_missionId)
+        public List<string> selectChildMissionInfo(int intent_missionId, string search_str)
         {
             List<string> list = new List<string>();
 
             try
             {
-                string sql = "select t.*,bfb as counts from Tab_Mission t where parentid=" + intent_missionId + " order by id";
+                string sql = "select t.*,bfb as counts from Tab_Mission t where parentid=" + intent_missionId + " and tilte like '%" + search_str + "%' order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -819,7 +819,7 @@ namespace DbManageWebService
         /// 获取统计任务信息
         /// </summary>
         /// <returns>获取统计任务信息</returns>
-        public List<string> selectChartMissionInfo(int userId, string datachart_index, string rolename, string department_name)
+        public List<string> selectChartMissionInfo(int userId, string datachart_index, string rolename, string department_name, string search_str)
         {
             List<string> list = new List<string>();
 
@@ -828,15 +828,15 @@ namespace DbManageWebService
                 string sql = "";
                 if (datachart_index == "0")//完成
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (3,6) ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (3,6) and title like '%" + search_str + "%' ";
                 }
                 else if (datachart_index == "1")//超时
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 7 ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 7 and title like '%" + search_str + "%' ";
                 }
                 else if (datachart_index == "2")//进行中
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,5) ";
+                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,5) and title like '%" + search_str + "%' ";
                 }
 
                 if (rolename == "普通员工" || rolename == "主管")
