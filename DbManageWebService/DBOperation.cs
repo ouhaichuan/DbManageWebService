@@ -21,7 +21,7 @@ namespace DbManageWebService
     {
         public static SqlConnection sqlCon;  //用于连接数据库
 
-        //将下面的引号之间的内容换成上面记录下的属性中的连接字符串
+        // 将下面的引号之间的内容换成上面记录下的属性中的连接字符串
         // private String ConServerStr = @"Data Source=HCOU\SQLEXPRESS;Initial Catalog=DB_PM;Integrated Security=True";
         // private String ConServerStr = @"data source=127.0.0.1;uid=pswz;pwd=pswz@163.com;database=DB_PM";
 
@@ -58,7 +58,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") and title like '%" + search_str + "%' order by id";
+                string sql = "select id,createUserName,Title,beginTime,endtime,status,importance,bfb as counts,zrrName from Tab_Mission t where id in (select mission_id from tab_attent where userid_id=" + id + ") and title like '%" + search_str + "%' order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -73,6 +73,7 @@ namespace DbManageWebService
                     list.Add(reader[5].ToString());
                     list.Add(reader[6].ToString());
                     list.Add(reader[7].ToString());
+                    list.Add(reader[8].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -276,11 +277,11 @@ namespace DbManageWebService
                 string sql = "";
                 if (rolename == "普通员工" || rolename == "主管")
                 {
-                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "' and title like '%" + search_str + "%' order by id";
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts,zrrName from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and deptName='" + department_name + "' and title like '%" + search_str + "%' order by id";
                 }
                 else if (rolename == "部门经理" || rolename == "副总经理" || rolename == "总经理")
                 {
-                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and title like '%" + search_str + "%' order by id";
+                    sql = "select t.*,(select count(*) from tab_attent where userid_id='" + createUserId + "' and mission_id=t.id) counts,zrrName from Tab_Mission t where t.ysrName!=(select username from tab_user where id=" + createUserId + ") and t.zrrName!=(select username from tab_user where id=" + createUserId + ") and title like '%" + search_str + "%' order by id";
                 }
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -297,6 +298,7 @@ namespace DbManageWebService
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
                     list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -789,7 +791,7 @@ namespace DbManageWebService
 
             try
             {
-                string sql = "select t.*,bfb as counts from Tab_Mission t where parentid=" + intent_missionId + " and tilte like '%" + search_str + "%' order by id";
+                string sql = "select t.*,bfb as counts,zrrName from Tab_Mission t where parentid=" + intent_missionId + " and tilte like '%" + search_str + "%' order by id";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -804,6 +806,7 @@ namespace DbManageWebService
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
                     list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -828,15 +831,15 @@ namespace DbManageWebService
                 string sql = "";
                 if (datachart_index == "0")//完成
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (3,6) and title like '%" + search_str + "%' ";
+                    sql = "select t.*,bfb as counts,zrrName from Tab_Mission t where status in (3,6) and title like '%" + search_str + "%' ";
                 }
                 else if (datachart_index == "1")//超时
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status = 7 and title like '%" + search_str + "%' ";
+                    sql = "select t.*,bfb as counts,zrrName from Tab_Mission t where status = 7 and title like '%" + search_str + "%' ";
                 }
                 else if (datachart_index == "2")//进行中
                 {
-                    sql = "select t.*,bfb as counts from Tab_Mission t where status in (1,2,5) and title like '%" + search_str + "%' ";
+                    sql = "select t.*,bfb as counts,zrrName from Tab_Mission t where status in (1,2,5) and title like '%" + search_str + "%' ";
                 }
 
                 if (rolename == "普通员工" || rolename == "主管")
@@ -865,6 +868,7 @@ namespace DbManageWebService
                     list.Add(reader[8].ToString());
                     list.Add(reader[27].ToString());//重要性
                     list.Add(reader[29].ToString());
+                    list.Add(reader[30].ToString());
                 }
                 reader.Close();
                 cmd.Dispose();
